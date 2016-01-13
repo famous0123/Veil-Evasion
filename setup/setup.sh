@@ -236,6 +236,11 @@ func_python_deps(){
     echo -e '\n\n [*] Installing PyInstaller (via Repos)'
     [[ "${silent}" == "true" ]] && arg="DEBIAN_FRONTEND=noninteractive"
     sudo ${arg} apt-get -y install pyinstaller
+    if [ ! -f "${rootdir}/.wine/drive_c/Python27/Lib/site-packages/setuptools-0.6c11-py2.7.egg-info" ]; then
+      wget https://www.veil-framework.com/InstallMe/distribute_setup.py
+      wine ${rootdir}/.wine/drive_c/Python27/python.exe distribute_setup.py
+      rm distribute_setup.py
+    fi
     tmp="$?"
     [ "${tmp}" -ne "0" ] && echo -e " [ERROR] Failed To Install PyInstaller... Exit Code: ${tmp}.\n" && exit 1
   else
